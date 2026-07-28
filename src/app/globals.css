@@ -1,26 +1,85 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-canvas-light: #F8FAFC;
+  --color-canvas-dark: #0B0F19;
+
+  --color-surface-light: #FFFFFF;
+  --color-surface-dark: #111827;
+  --color-surface-subtle-light: #F1F5F9;
+  --color-surface-subtle-dark: #1E293B;
+
+  --color-line-light: #E2E8F0;
+  --color-line-dark: #2E3A4E;
+
+  --color-text-primary-light: #0F172A;
+  --color-text-primary-dark: #F8FAFC;
+  --color-text-secondary-light: #64748B;
+  --color-text-secondary-dark: #94A3B8;
+
+  --color-status-optimal-light: #059669;
+  --color-status-optimal-dark: #10B981;
+  --color-status-optimal-bg-light: #ECFDF5;
+  --color-status-optimal-bg-dark: rgba(16, 185, 129, 0.1);
+
+  --color-status-warning-light: #D97706;
+  --color-status-warning-dark: #F59E0B;
+  --color-status-warning-bg-light: #FFFBEB;
+  --color-status-warning-bg-dark: rgba(245, 158, 11, 0.1);
+
+  --color-status-critical-light: #E11D48;
+  --color-status-critical-dark: #F43F5E;
+  --color-status-critical-bg-light: #FFF1F2;
+  --color-status-critical-bg-dark: rgba(244, 63, 94, 0.1);
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--color-canvas-light);
+    --foreground: var(--color-text-primary-light);
+    
+    --card: var(--color-surface-light);
+    --card-foreground: var(--color-text-primary-light);
+    
+    --border: var(--color-line-light);
+    
+    --muted: var(--color-surface-subtle-light);
+    --muted-foreground: var(--color-text-secondary-light);
+
+    --primary: #4F46E5; /* Indigo 600 */
+    --primary-foreground: #FFFFFF;
+  }
+
+  .dark {
+    --background: var(--color-canvas-dark);
+    --foreground: var(--color-text-primary-dark);
+    
+    --card: var(--color-surface-dark);
+    --card-foreground: var(--color-text-primary-dark);
+    
+    --border: var(--color-line-dark);
+    
+    --muted: var(--color-surface-subtle-dark);
+    --muted-foreground: var(--color-text-secondary-dark);
+
+    --primary: #6366F1; /* Indigo 500 */
+    --primary-foreground: #FFFFFF;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .tnum {
+    font-feature-settings: 'tnum';
+  }
 }

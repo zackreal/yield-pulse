@@ -1,0 +1,196 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  STORE_MANAGER
+  DATA_ANALYST
+  POS_CASHIER
+}
+
+model Workspace {
+  id              String             @id @default(uuid())
+  name            String
+  industry        String             @default("Grocery")
+  baseCurrency    String             @default("IDR")
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  users           User[]
+  products        Product[]
+  auditLogs       SystemAuditLog[]
+  customers       Customer[]
+  transactions    Transaction[]
+}
+
+model User {
+  id              String             @id @default(uuid())
+  workspaceId     String
+  email           String             @unique
+  passwordHash    String
+  fullName        String
+  role            UserRole           @default(STORE_MANAGER)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  workspace       Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  transactions    Transaction[]
+  
+  @@index([workspaceId])
+}
+
+model Product {
+  id              String             @id @default(uuid())
+  workspaceId     String?            // Optional for now to avoid breaking existing dummy data
+  sku             String             @unique
+  name            String
+  category        String
+  cogs            Decimal            @db.Decimal(10, 2) // Modal (Cost of Goods Sold)
+  basePrice       Decimal            @db.Decimal(10, 2) // Harga Dasar (P_base)
+  minPrice        Decimal            @db.Decimal(10, 2) // Batas Minimal Harga (P_min)
+  baseDemand      Float              // Laju Permintaan Bawaan (λ0)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  workspace       Workspace?         @relation(fields: [workspaceId], references: [id])
+
+  batches         Batch[]
+  salesLogs       SalesLog[]
+  elasticityA     ElasticityMatrix[] @relation("ProductA")
+  elasticityB     ElasticityMatrix[] @relation("ProductB")
+  transactionItems TransactionItem[]
+}
+
+model Batch {
+  id              String             @id @default(uuid())
+  batchNumber     String             @unique
+  productId       String
+  quantity        Int
+  expiryDate      DateTime
+  currentPrice    Decimal            @db.Decimal(10, 2) // Harga dinamis (P*) saat ini
+  status          BatchStatus        @default(OPTIMAL)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  product         Product            @relation(fields: [productId], references: [id])
+  policyCache     BellmanPolicyCache[]
+
+  @@index([productId])
+  @@index([expiryDate])
+  transactionItems TransactionItem[]
+}
+
+enum BatchStatus {
+  OPTIMAL
+  WARNING
+  CRITICAL
+  EXPIRED
+  SOLD_OUT
+}
+
+model SalesLog {
+  id              String             @id @default(uuid())
+  productId       String
+  quantitySold    Int
+  priceAtSale     Decimal            @db.Decimal(10, 2)
+  timestamp       DateTime           @default(now())
+  
+  product         Product            @relation(fields: [productId], references: [id])
+
+  @@index([productId])
+  @@index([timestamp])
+}
+
+model ElasticityMatrix {
+  id              String             @id @default(uuid())
+  productAId      String
+  productBId      String
+  crossElasticity Float              // Hubungan elastisitas silang (ε_ij)
+  confidence      Float              // Confidence level dari model AI (0-1)
+  updatedAt       DateTime           @updatedAt
+
+  productA        Product            @relation("ProductA", fields: [productAId], references: [id])
+  productB        Product            @relation("ProductB", fields: [productBId], references: [id])
+
+  @@unique([productAId, productBId])
+}
+
+model BellmanPolicyCache {
+  id              String             @id @default(uuid())
+  batchId         String
+  stateHash       String             // Hash state (Inventory + Time to Expiry)
+  recommendedPrice Decimal           @db.Decimal(10, 2)
+  expectedValue   Decimal            @db.Decimal(10, 2) // Value Function V(s)
+  wasteRisk       Float              // Probabilitas sisa barang dibuang
+  computedAt      DateTime           @default(now())
+
+  batch           Batch              @relation(fields: [batchId], references: [id])
+
+  @@unique([batchId, stateHash])
+}
+
+model SystemAuditLog {
+  id              String             @id @default(uuid())
+  workspaceId     String?
+  actionType      String             // e.g., "PRICE_OVERRIDE", "GUARDRAIL_TRIGGERED"
+  userId          String?            // Null if System/AI
+  description     String             @db.Text
+  timestamp       DateTime           @default(now())
+  metadata        Json?              // Additional context
+
+  workspace       Workspace?         @relation(fields: [workspaceId], references: [id])
+}
+
+model Customer {
+  id          String   @id @default(uuid())
+  workspaceId String?
+  name        String
+  phone       String   @unique
+  points      Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id])
+  transactions Transaction[]
+}
+
+model Transaction {
+  id              String   @id @default(uuid())
+  invoiceNumber   String   @unique
+  workspaceId     String?
+  cashierId       String?
+  customerId      String?
+  paymentMethod   String   @default("CASH")
+  subtotal        Decimal  @db.Decimal(10, 2)
+  discountTotal   Decimal  @db.Decimal(10, 2)
+  finalTotal      Decimal  @db.Decimal(10, 2)
+  amountReceived  Decimal? @db.Decimal(10, 2)
+  changeAmount    Decimal? @db.Decimal(10, 2)
+  createdAt       DateTime @default(now())
+
+  workspace       Workspace? @relation(fields: [workspaceId], references: [id])
+  cashier         User?      @relation(fields: [cashierId], references: [id])
+  customer        Customer?  @relation(fields: [customerId], references: [id])
+  items           TransactionItem[]
+}
+
+model TransactionItem {
+  id              String   @id @default(uuid())
+  transactionId   String
+  productId       String
+  batchId         String?  // Optional if we track which batch was sold
+  quantity        Int
+  originalPrice   Decimal  @db.Decimal(10, 2)
+  discountPrice   Decimal? @db.Decimal(10, 2)
+  isYieldPulseActive Boolean @default(false)
+
+  transaction     Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  product         Product     @relation(fields: [productId], references: [id])
+  batch           Batch?      @relation(fields: [batchId], references: [id])
+}
