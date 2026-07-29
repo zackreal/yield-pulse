@@ -16,7 +16,13 @@ export async function POST(req: Request) {
     let subtotal = 0;
     let totalDiscount = 0;
 
-    const transactionItems = [];
+    const transactionItems: {
+      productId: string;
+      quantity: number;
+      originalPrice: number;
+      discountPrice: number | null;
+      isYieldPulseActive: boolean;
+    }[] = [];
 
     // Verifikasi harga dari DB
     for (const item of cart) {
