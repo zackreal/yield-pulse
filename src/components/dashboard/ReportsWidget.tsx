@@ -3,16 +3,16 @@ import { FileText, Download, FileSpreadsheet } from 'lucide-react';
 
 export function ReportsWidget() {
   const reports = [
-    { title: 'Weekly Waste Report', format: 'PDF', date: 'Last 7 Days' },
-    { title: 'Monthly Revenue', format: 'Excel', date: 'July 2026' },
-    { title: 'Bellman Performance', format: 'PDF', date: 'Q3 2026' },
+    { title: 'Laporan Limbah Mingguan', format: 'PDF', date: '7 Hari Terakhir' },
+    { title: 'Pendapatan Bulanan', format: 'Excel', date: 'Juli 2026' },
+    { title: 'Kinerja Sistem Bellman', format: 'PDF', date: 'Kuartal 3 2026' },
   ];
 
   return (
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm h-full flex flex-col">
       <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-6 uppercase tracking-wider flex items-center gap-2">
         <FileText className="w-5 h-5 text-indigo-500" />
-        Quick Reports
+        Laporan Cepat
       </h3>
 
       <div className="flex-1 space-y-3">
@@ -39,7 +39,7 @@ export function ReportsWidget() {
       </div>
       
       <button className="w-full mt-4 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
-        View All Reports &rarr;
+        Lihat Semua Laporan &rarr;
       </button>
     </div>
   );

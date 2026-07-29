@@ -8,8 +8,8 @@ export function ApprovalWorkflowWidget() {
   const steps = [
     { name: 'Sistem Bellman', icon: BrainCircuit, status: 'done' },
     { name: 'Supervisor', icon: UserCog, status: 'done' },
-    { name: 'Store Manager', icon: Store, status: 'current' },
-    { name: 'POS Sync', icon: TerminalSquare, status: 'pending' },
+    { name: 'Manajer Toko', icon: Store, status: 'current' },
+    { name: 'Sinkronisasi POS', icon: TerminalSquare, status: 'pending' },
   ];
 
   return (
@@ -20,7 +20,7 @@ export function ApprovalWorkflowWidget() {
     >
       <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider flex items-center gap-2 mb-6">
         <GitMerge className="w-5 h-5 text-indigo-500" />
-        Approval Workflow
+        Alur Persetujuan
       </h2>
 
       <div className="flex-1 flex flex-col justify-center pb-4">
@@ -43,7 +43,7 @@ export function ApprovalWorkflowWidget() {
                   {step.name}
                 </div>
                 <div className="text-[10px] uppercase tracking-wider text-slate-400 mt-0.5">
-                  {step.status === 'done' ? 'Approved' : step.status === 'current' ? 'Pending Action' : 'Waiting'}
+                  {step.status === 'done' ? 'Disetujui' : step.status === 'current' ? 'Menunggu Tindakan' : 'Menunggu'}
                 </div>
               </div>
             </div>

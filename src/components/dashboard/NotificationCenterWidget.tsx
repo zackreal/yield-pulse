@@ -6,8 +6,8 @@ export function NotificationCenterWidget() {
     {
       id: 1,
       type: 'critical',
-      title: 'Milk B204',
-      message: 'Expires tomorrow. Potential Loss: Rp280.000',
+      title: 'Susu B204',
+      message: 'Kedaluwarsa besok. Potensi Rugi: Rp280.000',
       icon: <AlertCircle className="w-4 h-4" />,
       colorClass: 'text-rose-600 dark:text-rose-400',
       bgClass: 'bg-rose-100 dark:bg-rose-950/50 border-rose-200 dark:border-rose-900',
@@ -15,8 +15,8 @@ export function NotificationCenterWidget() {
     {
       id: 2,
       type: 'warning',
-      title: 'Bread A109',
-      message: 'Markdown overdue',
+      title: 'Roti A109',
+      message: 'Melewati batas waktu diskon',
       icon: <ShieldAlert className="w-4 h-4" />,
       colorClass: 'text-amber-600 dark:text-amber-400',
       bgClass: 'bg-amber-100 dark:bg-amber-950/50 border-amber-200 dark:border-amber-900',
@@ -24,8 +24,8 @@ export function NotificationCenterWidget() {
     {
       id: 3,
       type: 'success',
-      title: 'Frozen Chicken',
-      message: 'Safe / Optimal',
+      title: 'Ayam Beku',
+      message: 'Aman / Optimal',
       icon: <CheckCircle2 className="w-4 h-4" />,
       colorClass: 'text-emerald-600 dark:text-emerald-400',
       bgClass: 'bg-emerald-100 dark:bg-emerald-950/50 border-emerald-200 dark:border-emerald-900',
@@ -36,7 +36,7 @@ export function NotificationCenterWidget() {
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm h-full flex flex-col">
       <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-6 uppercase tracking-wider flex items-center gap-2">
         <BellRing className="w-5 h-5 text-indigo-500" />
-        Notification Center
+        Pusat Notifikasi
       </h3>
 
       <div className="flex-1 space-y-3">

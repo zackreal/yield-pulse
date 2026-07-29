@@ -20,8 +20,8 @@ export function BellmanExplanationModal({ onClose }: Props) {
               <BrainCircuit className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Bellman Decision</h2>
-              <p className="text-xs text-slate-500 font-mono mt-0.5">Stochastic DP Engine V2</p>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Keputusan Bellman</h2>
+              <p className="text-xs text-slate-500 font-mono mt-0.5">Mesin DP Stokastik V2</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition">
@@ -30,44 +30,44 @@ export function BellmanExplanationModal({ onClose }: Props) {
         </div>
 
         <div className="p-6 space-y-6">
-          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Current State</h3>
+          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Kondisi Saat Ini</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
-              <div className="text-xs text-slate-500 mb-1">Stock</div>
+              <div className="text-xs text-slate-500 mb-1">Stok</div>
               <div className="text-xl font-bold text-slate-900 dark:text-white">26</div>
             </div>
             <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
-              <div className="text-xs text-slate-500 mb-1">Remaining Days</div>
+              <div className="text-xs text-slate-500 mb-1">Sisa Hari</div>
               <div className="text-xl font-bold text-slate-900 dark:text-white">2</div>
             </div>
             <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
-              <div className="text-xs text-slate-500 mb-1">Demand λ</div>
-              <div className="text-xl font-bold text-slate-900 dark:text-white">5.8/day</div>
+              <div className="text-xs text-slate-500 mb-1">Permintaan λ</div>
+              <div className="text-xl font-bold text-slate-900 dark:text-white">5.8/hari</div>
             </div>
             <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
-              <div className="text-xs text-slate-500 mb-1">Elasticity</div>
+              <div className="text-xs text-slate-500 mb-1">Elastisitas Harga</div>
               <div className="text-xl font-bold text-slate-900 dark:text-white">-1.72</div>
             </div>
             <div className="p-4 bg-rose-50 dark:bg-rose-900/10 rounded-2xl border border-rose-100 dark:border-rose-900/30">
-              <div className="text-xs text-rose-600 dark:text-rose-400 mb-1">Waste Risk</div>
+              <div className="text-xs text-rose-600 dark:text-rose-400 mb-1">Risiko Limbah</div>
               <div className="text-xl font-bold text-rose-700 dark:text-rose-300">81%</div>
             </div>
             <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
-              <div className="text-xs text-slate-500 mb-1">Holding Cost</div>
+              <div className="text-xs text-slate-500 mb-1">Biaya Simpan</div>
               <div className="text-xl font-bold text-slate-900 dark:text-white">Rp420</div>
             </div>
           </div>
 
           <div className="h-px bg-slate-100 dark:bg-slate-800 w-full my-6"></div>
 
-          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Value Computation</h3>
+          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Komputasi Nilai</h3>
           <div className="grid grid-cols-2 gap-4">
             <div className="p-4 bg-emerald-50 dark:bg-emerald-900/10 rounded-2xl border border-emerald-100 dark:border-emerald-900/30">
-              <div className="text-xs text-emerald-600 dark:text-emerald-400 mb-1">Expected Revenue</div>
+              <div className="text-xs text-emerald-600 dark:text-emerald-400 mb-1">Proyeksi Pendapatan</div>
               <div className="text-2xl font-black text-emerald-700 dark:text-emerald-300">Rp412.000</div>
             </div>
             <div className="p-4 bg-indigo-50 dark:bg-indigo-900/10 rounded-2xl border border-indigo-100 dark:border-indigo-900/30">
-              <div className="text-xs text-indigo-600 dark:text-indigo-400 mb-1">Future Value</div>
+              <div className="text-xs text-indigo-600 dark:text-indigo-400 mb-1">Nilai Masa Depan</div>
               <div className="text-2xl font-black text-indigo-700 dark:text-indigo-300">Rp68.000</div>
             </div>
           </div>
@@ -77,10 +77,10 @@ export function BellmanExplanationModal({ onClose }: Props) {
               <Calculator className="w-32 h-32" />
             </div>
             <h4 className="text-sm font-bold text-indigo-200 uppercase tracking-wider mb-2 flex items-center gap-2">
-              <Info className="w-4 h-4" /> Logic Reason
+              <Info className="w-4 h-4" /> Alasan Logika
             </h4>
             <p className="text-lg font-medium leading-relaxed relative z-10">
-              Lowering price today maximizes expected total profit while reducing waste.
+              Menurunkan harga hari ini akan memaksimalkan total keuntungan sekaligus menekan limbah secara drastis.
             </p>
           </div>
         </div>

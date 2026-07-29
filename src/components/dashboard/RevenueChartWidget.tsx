@@ -14,13 +14,13 @@ import {
 import { TrendingUp, Activity, CheckCircle } from 'lucide-react';
 
 const CHART_DATA = [
-  { day: 'Mon', actual: 21, bellman: 22, ruleBased: 20, fifo: 18 },
-  { day: 'Tue', actual: 24, bellman: 25, ruleBased: 22, fifo: 19 },
-  { day: 'Wed', actual: 28, bellman: 29, ruleBased: 24, fifo: 20 },
-  { day: 'Thu', actual: 35, bellman: 34, ruleBased: 28, fifo: 22 },
-  { day: 'Fri', actual: 42, bellman: 45, ruleBased: 32, fifo: 25 },
-  { day: 'Sat', actual: 58, bellman: 60, ruleBased: 42, fifo: 30 },
-  { day: 'Sun', actual: 65, bellman: 68, ruleBased: 48, fifo: 32 },
+  { day: 'Sen', actual: 21, bellman: 22, ruleBased: 20, fifo: 18 },
+  { day: 'Sel', actual: 24, bellman: 25, ruleBased: 22, fifo: 19 },
+  { day: 'Rab', actual: 28, bellman: 29, ruleBased: 24, fifo: 20 },
+  { day: 'Kam', actual: 35, bellman: 34, ruleBased: 28, fifo: 22 },
+  { day: 'Jum', actual: 42, bellman: 45, ruleBased: 32, fifo: 25 },
+  { day: 'Sab', actual: 58, bellman: 60, ruleBased: 42, fifo: 30 },
+  { day: 'Min', actual: 65, bellman: 68, ruleBased: 48, fifo: 32 },
 ];
 
 const formatCurrency = (value: number) => {
@@ -32,7 +32,7 @@ export function RevenueChartWidget() {
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm flex flex-col h-full">
       <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-6 uppercase tracking-wider flex items-center gap-2">
         <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
-        Revenue Trend
+        Tren Pendapatan
       </h3>
 
       <div className="flex-grow w-full min-h-[250px] mb-6">
@@ -83,7 +83,7 @@ export function RevenueChartWidget() {
               dot={{ r: 4, strokeWidth: 2, fill: '#0B0F19' }}
             />
             <Line 
-              name="Actual"
+              name="Aktual"
               type="monotone" 
               dataKey="actual" 
               stroke="#00F3FF" 
@@ -92,7 +92,7 @@ export function RevenueChartWidget() {
               activeDot={{ r: 6, strokeWidth: 0 }}
             />
             <Line 
-              name="Rule Based"
+              name="Berdasarkan Aturan (Lama)"
               type="monotone" 
               dataKey="ruleBased" 
               stroke="#F59E0B" 
@@ -117,21 +117,21 @@ export function RevenueChartWidget() {
         <div>
           <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 mb-1">
             <TrendingUp className="w-3.5 h-3.5" />
-            <span className="text-xs font-semibold uppercase tracking-wider">Confidence Interval</span>
+            <span className="text-xs font-semibold uppercase tracking-wider">Interval Kepercayaan</span>
           </div>
           <p className="text-sm font-mono font-bold text-slate-900 dark:text-slate-100">± 2.4% (95%)</p>
         </div>
         <div>
           <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 mb-1">
             <Activity className="w-3.5 h-3.5" />
-            <span className="text-xs font-semibold uppercase tracking-wider">Forecast Error</span>
+            <span className="text-xs font-semibold uppercase tracking-wider">Tingkat Kesalahan</span>
           </div>
           <p className="text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400">1.8% MAPE</p>
         </div>
         <div>
           <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 mb-1">
             <CheckCircle className="w-3.5 h-3.5" />
-            <span className="text-xs font-semibold uppercase tracking-wider">Model Accuracy</span>
+            <span className="text-xs font-semibold uppercase tracking-wider">Akurasi Model</span>
           </div>
           <p className="text-sm font-mono font-bold text-indigo-600 dark:text-indigo-400">98.2%</p>
         </div>

@@ -1,23 +1,24 @@
 import React from 'react';
 
 const HEATMAP_DATA = [
+const HEATMAP_DATA = [
   {
-    category: "Fresh Dairy",
-    "> 7 Days": { value: 42500000, status: "safe" },
-    "3-7 Days": { value: 8200000, status: "warning" },
-    "<= 2 Days": { value: 2400000, status: "critical" },
+    category: "Produk Susu Segar",
+    "> 7 Hari": { value: 42500000, status: "safe" },
+    "3-7 Hari": { value: 8200000, status: "warning" },
+    "<= 2 Hari": { value: 2400000, status: "critical" },
   },
   {
-    category: "Bakery & Meat",
-    "> 7 Days": { value: 18000000, status: "safe" },
-    "3-7 Days": { value: 4100000, status: "warning" },
-    "<= 2 Days": { value: 1100000, status: "critical" },
+    category: "Roti & Daging",
+    "> 7 Hari": { value: 18000000, status: "safe" },
+    "3-7 Hari": { value: 4100000, status: "warning" },
+    "<= 2 Hari": { value: 1100000, status: "critical" },
   },
   {
-    category: "Produce/Fruit",
-    "> 7 Days": { value: 12000000, status: "safe" },
-    "3-7 Days": { value: 6800000, status: "warning" },
-    "<= 2 Days": { value: 3800000, status: "critical" },
+    category: "Sayur & Buah",
+    "> 7 Hari": { value: 12000000, status: "safe" },
+    "3-7 Hari": { value: 6800000, status: "warning" },
+    "<= 2 Hari": { value: 3800000, status: "critical" },
   }
 ];
 
@@ -46,17 +47,17 @@ export function ExpiryRiskHeatmap() {
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm flex flex-col h-full">
       <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-6 uppercase tracking-wider flex items-center gap-2">
         <span className="w-1.5 h-6 bg-rose-500 rounded-full"></span>
-        Expiry Risk Heatmap
+        Heatmap Risiko Kedaluwarsa
       </h3>
 
       <div className="overflow-x-auto flex-grow">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr>
-              <th className="py-2 px-3 text-xs font-semibold text-slate-400 border-b border-slate-100 dark:border-slate-800">Category</th>
-              <th className="py-2 px-3 text-xs font-semibold text-slate-400 border-b border-slate-100 dark:border-slate-800 text-center">{"> 7 Days"}</th>
-              <th className="py-2 px-3 text-xs font-semibold text-slate-400 border-b border-slate-100 dark:border-slate-800 text-center">{"3-7 Days"}</th>
-              <th className="py-2 px-3 text-xs font-semibold text-slate-400 border-b border-slate-100 dark:border-slate-800 text-center">{"<= 2 Days"}</th>
+              <th className="py-2 px-3 text-xs font-semibold text-slate-400 border-b border-slate-100 dark:border-slate-800">Kategori</th>
+              <th className="py-2 px-3 text-xs font-semibold text-slate-400 border-b border-slate-100 dark:border-slate-800 text-center">{"> 7 Hari"}</th>
+              <th className="py-2 px-3 text-xs font-semibold text-slate-400 border-b border-slate-100 dark:border-slate-800 text-center">{"3-7 Hari"}</th>
+              <th className="py-2 px-3 text-xs font-semibold text-slate-400 border-b border-slate-100 dark:border-slate-800 text-center">{"<= 2 Hari"}</th>
             </tr>
           </thead>
           <tbody>
@@ -67,20 +68,20 @@ export function ExpiryRiskHeatmap() {
                 </td>
                 
                 <td className="py-2 px-2">
-                  <div className={`p-3 rounded-xl border text-center flex flex-col items-center justify-center h-full ${getStatusColor(row["> 7 Days"].status)}`}>
-                    <span className="font-mono font-semibold">{formatCurrency(row["> 7 Days"].value)}</span>
+                  <div className={`p-3 rounded-xl border text-center flex flex-col items-center justify-center h-full ${getStatusColor(row["> 7 Hari"].status)}`}>
+                    <span className="font-mono font-semibold">{formatCurrency(row["> 7 Hari"].value)}</span>
                   </div>
                 </td>
                 
                 <td className="py-2 px-2">
-                  <div className={`p-3 rounded-xl border text-center flex flex-col items-center justify-center h-full ${getStatusColor(row["3-7 Days"].status)}`}>
-                    <span className="font-mono font-semibold">{formatCurrency(row["3-7 Days"].value)}</span>
+                  <div className={`p-3 rounded-xl border text-center flex flex-col items-center justify-center h-full ${getStatusColor(row["3-7 Hari"].status)}`}>
+                    <span className="font-mono font-semibold">{formatCurrency(row["3-7 Hari"].value)}</span>
                   </div>
                 </td>
                 
                 <td className="py-2 px-2">
-                  <div className={`p-3 rounded-xl border text-center flex flex-col items-center justify-center h-full ${getStatusColor(row["<= 2 Days"].status)}`}>
-                    <span className="font-mono font-semibold">{formatCurrency(row["<= 2 Days"].value)}</span>
+                  <div className={`p-3 rounded-xl border text-center flex flex-col items-center justify-center h-full ${getStatusColor(row["<= 2 Hari"].status)}`}>
+                    <span className="font-mono font-semibold">{formatCurrency(row["<= 2 Hari"].value)}</span>
                   </div>
                 </td>
               </tr>

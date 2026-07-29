@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 const kpis = [
   { 
-    title: 'Revenue', 
+    title: 'Pendapatan', 
     value: 'Rp151 M', 
     trend: '▲ 8%', 
     trendColor: 'text-emerald-500', 
@@ -14,7 +14,7 @@ const kpis = [
     color: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400' 
   },
   { 
-    title: 'Waste Saved', 
+    title: 'Aset Terselamatkan', 
     value: 'Rp8.4 M', 
     trend: '▲ 12%', 
     trendColor: 'text-emerald-500', 
@@ -22,7 +22,7 @@ const kpis = [
     color: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400' 
   },
   { 
-    title: 'Gross Margin', 
+    title: 'Margin Kotor', 
     value: '31%', 
     trend: '▲ 4%', 
     trendColor: 'text-emerald-500', 
@@ -30,7 +30,7 @@ const kpis = [
     color: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400' 
   },
   { 
-    title: 'Sell-through', 
+    title: 'Tingkat Penjualan', 
     value: '97%', 
     trend: '▲ 3%', 
     trendColor: 'text-emerald-500', 
@@ -38,9 +38,9 @@ const kpis = [
     color: 'bg-purple-50 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400' 
   },
   { 
-    title: 'Inventory Turnover', 
-    value: '18 Days', 
-    trend: '▼ 2 Days', 
+    title: 'Perputaran Stok', 
+    value: '18 Hari', 
+    trend: '▼ 2 Hari', 
     trendColor: 'text-emerald-500', // Down is good for turnover
     icon: Repeat, 
     color: 'bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400' 

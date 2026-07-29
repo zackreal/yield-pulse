@@ -111,10 +111,10 @@ export function InventoryGrid3DWidget() {
       <div className="absolute top-6 left-6 z-10 pointer-events-none">
         <h3 className="text-lg font-bold text-slate-100 flex items-center gap-2">
           <span className="flex h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
-          3D Spatial Inventory Grid
+          Grid Inventaris Spasial 3D
         </h3>
         <p className="text-sm text-slate-400">
-          Real-time batch expiry risk visualization.
+          Visualisasi risiko kedaluwarsa secara langsung.
         </p>
       </div>
       
@@ -126,11 +126,11 @@ export function InventoryGrid3DWidget() {
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#ffb700] shadow-[0_0_8px_#ffb700]"></span>
-            <span className="text-slate-300">Warning</span>
+            <span className="text-slate-300">Waspada</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#ff0055] shadow-[0_0_8px_#ff0055] animate-pulse"></span>
-            <span className="text-slate-300">Critical</span>
+            <span className="text-slate-300">Kritis</span>
           </div>
         </div>
       </div>

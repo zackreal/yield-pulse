@@ -63,20 +63,20 @@ export default function Home() {
           <div className="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="w-8 h-8 rounded-full bg-rose-500 animate-pulse"></span>
           </div>
-          <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Critical Batch</h2>
-          <h1 className="text-3xl font-black text-white">Milk B204</h1>
-          <p className="text-rose-400 font-bold mt-2 text-lg">2 Days Left</p>
+          <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Grup Kritis</h2>
+          <h1 className="text-3xl font-black text-white">Susu B204</h1>
+          <p className="text-rose-400 font-bold mt-2 text-lg">Sisa 2 Hari</p>
         </div>
 
         <div className="bg-slate-800 p-6 rounded-3xl w-full max-w-sm border border-slate-700 shadow-2xl mb-8">
-          <h3 className="text-center text-slate-400 font-bold mb-4 uppercase tracking-wider">Approve Markdown?</h3>
+          <h3 className="text-center text-slate-400 font-bold mb-4 uppercase tracking-wider">Setujui Diskon?</h3>
           <div className="flex justify-between items-center text-xl font-bold mb-4">
             <span className="text-slate-400 line-through">Rp20.000</span>
             <span className="text-indigo-400">Rp16.500</span>
           </div>
           <div className="flex gap-4 mt-8">
-            <button className="flex-1 py-4 rounded-2xl bg-slate-700 text-white font-bold text-lg active:scale-95 transition">No</button>
-            <button className="flex-1 py-4 rounded-2xl bg-indigo-600 text-white font-bold text-lg shadow-lg shadow-indigo-500/30 active:scale-95 transition">Yes</button>
+            <button className="flex-1 py-4 rounded-2xl bg-slate-700 text-white font-bold text-lg active:scale-95 transition">Tidak</button>
+            <button className="flex-1 py-4 rounded-2xl bg-indigo-600 text-white font-bold text-lg shadow-lg shadow-indigo-500/30 active:scale-95 transition">Ya</button>
           </div>
         </div>
       </div>
@@ -150,8 +150,8 @@ export default function Home() {
               <div className="xl:col-span-2">
                 <HeroDecisionPanel 
                   onWhyClick={() => setShowBellmanExplanation(true)} 
-                  onSimulateClick={() => alert('Opening full simulator...')}
-                  onApproveClick={() => alert('Markdown approved and synced to POS!')}
+                  onSimulateClick={() => alert('Membuka simulator penuh...')}
+                  onApproveClick={() => alert('Diskon disetujui dan disinkronkan ke POS!')}
                 />
               </div>
               <div className="xl:col-span-1">
@@ -197,33 +197,33 @@ export default function Home() {
               {/* Left Sidebar (Catalog & Status) */}
               <div className="xl:col-span-1 space-y-6">
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 uppercase tracking-wider">Catalog & Status</h3>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 uppercase tracking-wider">Katalog & Status</h3>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-2 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg cursor-pointer transition border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Fresh Dairy</span>
-                      <span className="text-xs bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400 px-2.5 py-1 rounded-full font-bold">High Risk</span>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Produk Susu Segar</span>
+                      <span className="text-xs bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400 px-2.5 py-1 rounded-full font-bold">Risiko Tinggi</span>
                     </div>
                     <div className="flex justify-between items-center p-2 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg cursor-pointer transition border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Bakery & Meat</span>
-                      <span className="text-xs bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400 px-2.5 py-1 rounded-full font-bold">Warning</span>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Roti & Daging</span>
+                      <span className="text-xs bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400 px-2.5 py-1 rounded-full font-bold">Waspada</span>
                     </div>
                     <div className="flex justify-between items-center p-2 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg cursor-pointer transition border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Produce/Fruit</span>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Sayur & Buah</span>
                       <span className="text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400 px-2.5 py-1 rounded-full font-bold">Optimal</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 uppercase tracking-wider">Quick Metrics</h3>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 uppercase tracking-wider">Metrik Cepat</h3>
                   <div className="space-y-4">
                     <div className="p-3 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-800">
-                      <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Total Risk Exposure</div>
+                      <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Total Risiko Kedaluwarsa</div>
                       <div className="text-xl font-bold font-mono text-rose-600 dark:text-rose-400">Rp 7.300.000</div>
                     </div>
                     <div className="p-3 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-800">
-                      <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Active Flash Sales</div>
-                      <div className="text-xl font-bold font-mono text-indigo-600 dark:text-indigo-400">14 Batches</div>
+                      <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">Flash Sale Aktif</div>
+                      <div className="text-xl font-bold font-mono text-indigo-600 dark:text-indigo-400">14 Kelompok</div>
                     </div>
                   </div>
                 </div>
@@ -250,15 +250,15 @@ export default function Home() {
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm h-full flex flex-col">
                   <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 uppercase tracking-wider flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    Live Sales Feed
+                    Log Penjualan Langsung
                   </h3>
                   <div className="flex-1 overflow-y-auto space-y-3 pr-1">
                     {[
-                      { time: '21:40', batch: 'BATCH-1021', action: 'Sold 2 pcs', price: 'Rp 14.000', type: 'sale' },
-                      { time: '21:39', batch: 'BATCH-1015', action: 'Markdown applied', price: 'Rp 18.000', type: 'system' },
-                      { time: '21:35', batch: 'BATCH-1008', action: 'Sold 5 pcs', price: 'Rp 20.000', type: 'sale' },
-                      { time: '21:31', batch: 'BATCH-1021', action: 'Critical Alert', price: 'Triggered', type: 'alert' },
-                      { time: '21:28', batch: 'BATCH-1012', action: 'Sold 1 pc', price: 'Rp 20.000', type: 'sale' },
+                      { time: '21:40', batch: 'BATCH-1021', action: 'Terjual 2 pcs', price: 'Rp 14.000', type: 'sale' },
+                      { time: '21:39', batch: 'BATCH-1015', action: 'Diskon diterapkan', price: 'Rp 18.000', type: 'system' },
+                      { time: '21:35', batch: 'BATCH-1008', action: 'Terjual 5 pcs', price: 'Rp 20.000', type: 'sale' },
+                      { time: '21:31', batch: 'BATCH-1021', action: 'Peringatan Kritis', price: 'Terpicu', type: 'alert' },
+                      { time: '21:28', batch: 'BATCH-1012', action: 'Terjual 1 pc', price: 'Rp 20.000', type: 'sale' },
                     ].map((log, i) => (
                       <div key={i} className={`flex flex-col p-3 rounded-xl border ${
                         log.type === 'alert' ? 'bg-rose-50 dark:bg-rose-950/30 border-rose-100 dark:border-rose-900/50' : 
@@ -266,12 +266,12 @@ export default function Home() {
                         'bg-slate-50 dark:bg-slate-800/30 border-slate-100 dark:border-slate-800/50'
                       }`}>
                         <div className="flex justify-between items-center mb-1.5">
-                          <span className="text-[10px] font-mono font-bold text-slate-400">{log.time}</span>
-                          <span className={`text-xs font-mono font-bold ${
-                            log.type === 'alert' ? 'text-rose-600 dark:text-rose-400' :
-                            log.type === 'system' ? 'text-indigo-600 dark:text-indigo-400' :
-                            'text-slate-700 dark:text-slate-300'
-                          }`}>{log.batch}</span>
+                           <span className="text-[10px] font-mono font-bold text-slate-400">{log.time}</span>
+                           <span className={`text-xs font-mono font-bold ${
+                             log.type === 'alert' ? 'text-rose-600 dark:text-rose-400' :
+                             log.type === 'system' ? 'text-indigo-600 dark:text-indigo-400' :
+                             'text-slate-700 dark:text-slate-300'
+                           }`}>{log.batch}</span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{log.action}</span>
@@ -281,7 +281,7 @@ export default function Home() {
                     ))}
                   </div>
                   <button className="w-full mt-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider hover:bg-slate-50 dark:hover:bg-slate-800 transition shadow-sm active:scale-95">
-                    View Full Audit Trail
+                    Lihat Jejak Audit Lengkap
                   </button>
                 </div>
               </div>

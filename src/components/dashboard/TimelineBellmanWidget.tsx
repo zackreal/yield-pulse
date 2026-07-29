@@ -6,11 +6,11 @@ import { motion } from 'framer-motion';
 
 export function TimelineBellmanWidget() {
   const timeline = [
-    { day: 'Day 5', price: '20.000', status: 'past' },
-    { day: 'Day 4', price: '19.000', status: 'past' },
-    { day: 'Day 3', price: '18.000', status: 'past' },
-    { day: 'Day 2', price: '16.500', status: 'current' },
-    { day: 'Day 1', price: '14.000', status: 'future' },
+    { day: 'Hari 5', price: '20.000', status: 'past' },
+    { day: 'Hari 4', price: '19.000', status: 'past' },
+    { day: 'Hari 3', price: '18.000', status: 'past' },
+    { day: 'Hari 2', price: '16.500', status: 'current' },
+    { day: 'Hari 1', price: '14.000', status: 'future' },
   ];
 
   return (
@@ -46,7 +46,7 @@ export function TimelineBellmanWidget() {
                   item.status === 'past' ? 'text-slate-400' :
                   'text-slate-500'
                 }`}>
-                  {item.day} {item.status === 'current' && '(Today)'}
+                  {item.day} {item.status === 'current' && '(Hari Ini)'}
                 </span>
                 
                 <span className={`text-lg font-black font-mono ${
