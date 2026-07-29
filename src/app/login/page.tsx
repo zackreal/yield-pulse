@@ -1,6 +1,6 @@
 'use client';
 
-import { Eye, EyeOff, Lock, Mail, ArrowRight, ShieldCheck, Zap, BarChart3 } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, ArrowRight, Star } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -38,173 +38,155 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-white -m-4 md:-m-6 lg:-m-8">
-      {/* Left Panel - Elegant Branding (Not AI Slop, just premium SaaS) */}
-      <div className="hidden lg:flex w-1/2 bg-slate-50 relative overflow-hidden flex-col justify-between p-12 lg:p-16 border-r border-slate-200">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/subtle-dots.png')] opacity-[0.15] mix-blend-multiply" />
-        
-        {/* Soft, non-intrusive geometric gradients */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full blur-[100px] opacity-60 translate-x-1/2 -translate-y-1/4" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-100 rounded-full blur-[100px] opacity-60 -translate-x-1/2 translate-y-1/4" />
-
-        <div className="relative z-10">
-          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-md mb-8">
-            <span className="text-white font-bold text-xl tracking-tight">YP</span>
-          </div>
-          <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-4">
-            Yield Pulse <br/> Command Center
-          </h1>
-          <p className="text-lg text-slate-600 max-w-md leading-relaxed">
-            Manage your dynamic pricing and inventory with precision. Built for high-performance retail operations.
-          </p>
-        </div>
-
-        <div className="relative z-10 space-y-8 max-w-md">
-          <div className="flex gap-4">
-            <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-              <BarChart3 className="w-6 h-6 text-blue-600" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-slate-900 text-lg">Real-time Analytics</h3>
-              <p className="text-sm text-slate-600 mt-1 leading-relaxed">Monitor revenue and elasticity across all your locations instantly.</p>
-            </div>
-          </div>
-          
-          <div className="flex gap-4">
-            <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-6 h-6 text-indigo-600" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-slate-900 text-lg">Enterprise Security</h3>
-              <p className="text-sm text-slate-600 mt-1 leading-relaxed">Bank-grade encryption and role-based access control for your data.</p>
-            </div>
-          </div>
-          
-          <div className="flex gap-4">
-            <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center shrink-0">
-              <Zap className="w-6 h-6 text-sky-600" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-slate-900 text-lg">Dynamic Adjustments</h3>
-              <p className="text-sm text-slate-600 mt-1 leading-relaxed">Automated Bellman equations optimize your pricing round the clock.</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="relative z-10 text-sm text-slate-500 font-medium">
-          &copy; {new Date().getFullYear()} Yield Pulse Inc.
-        </div>
+    <div className="relative flex min-h-[100dvh] items-center justify-center bg-slate-50 p-4 sm:p-8 overflow-hidden -m-4 md:-m-6 lg:-m-8">
+      
+      {/* Background Aurora Elements (Inspired by LaundryKilo) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+            rotate: [0, 90, 0]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-[20%] -left-[10%] h-[600px] w-[600px] rounded-full bg-blue-400/30 blur-[100px]"
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.5, 1],
+            opacity: [0.2, 0.4, 0.2],
+            rotate: [0, -90, 0]
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute -bottom-[20%] -right-[10%] h-[500px] w-[500px] rounded-full bg-indigo-500/20 blur-[100px]"
+        />
       </div>
 
-      {/* Right Panel - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative bg-white">
+      <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center relative z-10">
+        
+        {/* Left Side: Branding */}
         <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="w-full max-w-md"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="hidden lg:flex flex-col justify-center"
         >
-          <div className="mb-10 text-center lg:text-left">
-            <div className="lg:hidden w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-6 mx-auto shadow-md">
-              <span className="text-white font-bold text-xl tracking-tight">YP</span>
-            </div>
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">Welcome back</h2>
-            <p className="text-slate-500">Please enter your details to sign in.</p>
+          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-blue-600 text-white shadow-2xl shadow-blue-600/30">
+            <span className="text-3xl font-bold tracking-tight">YP</span>
           </div>
+          <h1 className="text-5xl font-black tracking-tighter text-slate-950 leading-tight">
+            Tingkatkan Skala <br/>
+            Pricing Retail Anda.
+          </h1>
+          <p className="mt-6 text-lg text-slate-500 max-w-md leading-relaxed">
+            Yield Pulse hadir dengan sistem dynamic pricing berteknologi Bellman Equation dan analitik elastisitas kelas atas.
+          </p>
+          
+          <div className="mt-12 flex items-center gap-6">
+            <div className="flex -space-x-3">
+              {[1,2,3,4].map(i => (
+                <div key={i} className={`h-10 w-10 rounded-full border-2 border-slate-50 bg-slate-200 z-${5-i} shadow-sm overflow-hidden`}>
+                  <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="User" />
+                </div>
+              ))}
+            </div>
+            <div>
+              <p className="text-sm font-bold text-slate-950">Dipercaya oleh 500+ enterprise</p>
+              <div className="flex text-amber-400 mt-1 gap-0.5">
+                {[1,2,3,4,5].map(i => <Star key={i} size={14} className="fill-current text-amber-400" />)}
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
-          <form className="space-y-6" onSubmit={handleLogin}>
+        {/* Right Side: Auth Portal */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
+          className="w-full max-w-[420px] mx-auto lg:mx-0 lg:ml-auto"
+        >
+          <div className="relative rounded-[2.5rem] bg-white/80 backdrop-blur-xl p-8 sm:p-10 shadow-2xl shadow-slate-200/50 border border-white">
             
-            {errorMsg && (
-              <motion.div 
-                initial={{ opacity: 0, height: 0 }} 
-                animate={{ opacity: 1, height: 'auto' }}
-                className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl text-sm flex items-start gap-3"
-              >
-                <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>{errorMsg}</span>
-              </motion.div>
-            )}
+            {/* Mobile Logo */}
+            <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-600/30">
+                <span className="font-bold tracking-tight">YP</span>
+              </div>
+              <span className="text-xl font-bold tracking-tight text-slate-950">Yield Pulse</span>
+            </div>
 
-            <div className="space-y-5">
+            {/* Login Form */}
+            <motion.form 
+              onSubmit={handleLogin} 
+              className="flex flex-col gap-5"
+            >
+              <h2 className="text-2xl font-bold text-slate-950 mb-2">Selamat Datang Kembali! 👋</h2>
+              
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2" htmlFor="email">
-                  Work Email
+                <label className="mb-2 block text-xs font-bold uppercase tracking-widest text-slate-500">
+                  Alamat Email
                 </label>
-                <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                    <Mail size={18} />
                   </div>
                   <input
-                    id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    className="block w-full rounded-2xl border border-slate-200 bg-slate-50/50 py-3.5 pl-12 pr-4 text-sm text-slate-950 transition focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600"
+                    placeholder="admin@enterprise.com"
                     required
-                    className="block w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-600/10 focus:border-blue-600 text-slate-900 text-sm transition-all outline-none placeholder:text-slate-400 hover:border-slate-300 bg-white"
-                    placeholder="name@company.com"
                   />
                 </div>
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium text-slate-700" htmlFor="password">
-                    Password
+                <div className="flex justify-between items-center mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-500">
+                    Kata Sandi
                   </label>
-                  <a href="#" className="text-sm font-semibold text-blue-600 hover:text-blue-500 transition-colors">
-                    Forgot password?
-                  </a>
+                  <button type="button" className="text-xs font-bold text-blue-600 hover:text-blue-700">Lupa Sandi?</button>
                 </div>
-                <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                    <Lock size={18} />
                   </div>
                   <input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="block w-full pl-11 pr-11 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-600/10 focus:border-blue-600 text-slate-900 text-sm transition-all outline-none placeholder:text-slate-400 hover:border-slate-300 bg-white"
+                    className="block w-full rounded-2xl border border-slate-200 bg-slate-50/50 py-3.5 pl-12 pr-12 text-sm text-slate-950 transition focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600"
                     placeholder="••••••••"
+                    required
                   />
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-5 w-5" />
+                      <EyeOff size={18} />
                     ) : (
-                      <Eye className="h-5 w-5" />
+                      <Eye size={18} />
                     )}
                   </button>
                 </div>
               </div>
-            </div>
 
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-600 border-slate-300 rounded cursor-pointer transition-colors"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-slate-600 cursor-pointer select-none">
-                Remember for 30 days
-              </label>
-            </div>
+              {errorMsg && (
+                <div className="rounded-xl bg-red-50 p-3 text-xs font-medium text-red-600 border border-red-100">
+                  {errorMsg}
+                </div>
+              )}
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-600/20 disabled:opacity-70 disabled:cursor-not-allowed transition-all overflow-hidden shadow-sm"
-            >
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out rounded-xl" />
-              <span className="relative flex items-center justify-center gap-2">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="mt-4 w-full rounded-2xl bg-blue-600 py-4 text-sm font-bold text-white transition hover:bg-blue-700 active:scale-[0.98] shadow-lg shadow-blue-600/20 flex justify-center items-center gap-2"
+              >
                 {isLoading ? (
                   <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -212,23 +194,20 @@ export default function LoginPage() {
                   </svg>
                 ) : (
                   <>
-                    Sign In
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    Masuk ke Dashboard
+                    <ArrowRight size={16} />
                   </>
                 )}
-              </span>
-            </button>
-          </form>
-
-          <div className="mt-8 text-center lg:text-left">
-            <p className="text-sm text-slate-500">
-              Don't have an account?{' '}
-              <Link href="/register" className="font-semibold text-blue-600 hover:text-blue-500 transition-colors">
-                Request access
-              </Link>
-            </p>
+              </button>
+              
+              <p className="text-center text-[12px] text-slate-500 font-medium mt-2">
+                Belum punya akun enterprise?{' '}
+                <Link href="/register" className="text-blue-600 hover:text-blue-700">Daftar Baru</Link>
+              </p>
+            </motion.form>
           </div>
         </motion.div>
+
       </div>
     </div>
   );
