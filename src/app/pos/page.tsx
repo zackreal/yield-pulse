@@ -400,8 +400,12 @@ export default function POSPage() {
                   message: 'Apakah Anda yakin ingin keluar dari sistem POS?',
                   type: 'warning',
                   confirmText: 'Ya, Keluar',
-                  onConfirm: () => {
-                    document.cookie = 'auth_token=; Max-Age=0; path=/;';
+                  onConfirm: async () => {
+                    try {
+                      await fetch('/api/v1/auth/logout', { method: 'POST' });
+                    } catch (e) {
+                      console.error('Logout error', e);
+                    }
                     window.location.href = '/login';
                   }
                 });
