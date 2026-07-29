@@ -78,11 +78,9 @@ export default function POSPage() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Auto-focus ke hidden input
+      // Auto-focus ke hidden input HANYA jika tidak ada elemen aktif lain (body)
       if (
-        document.activeElement !== inputRef.current && 
-        document.activeElement?.id !== 'search-input' && 
-        document.activeElement?.id !== 'customer-search' && 
+        document.activeElement?.tagName === 'BODY' &&
         !isPaymentOpen && 
         !pendingVerificationItem &&
         !isCustomerModalOpen &&
