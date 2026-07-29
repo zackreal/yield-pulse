@@ -1,7 +1,14 @@
 import React from 'react';
 
-const HEATMAP_DATA = [
-const HEATMAP_DATA = [
+type HeatmapStatus = 'safe' | 'warning' | 'critical';
+interface HeatmapData {
+  category: string;
+  "> 7 Hari": { value: number; status: HeatmapStatus };
+  "3-7 Hari": { value: number; status: HeatmapStatus };
+  "<= 2 Hari": { value: number; status: HeatmapStatus };
+}
+
+const HEATMAP_DATA: HeatmapData[] = [
   {
     category: "Produk Susu Segar",
     "> 7 Hari": { value: 42500000, status: "safe" },
