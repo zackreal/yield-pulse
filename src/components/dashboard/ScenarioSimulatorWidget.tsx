@@ -1,15 +1,27 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Activity, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { getScenarioSimulatorData } from '@/app/actions/dashboard';
 
 export function ScenarioSimulatorWidget() {
-  const scenarios = [
-    { name: 'Rekomendasi Sistem', rev: '151 Juta', waste: '2.3%', best: true },
-    { name: 'Diskon 25%', rev: '149 Juta', waste: '1.1%', best: false },
-    { name: 'Diskon 35%', rev: '145 Juta', waste: '0.2%', best: false },
-  ];
+  const [scenarios, setScenarios] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getScenarioSimulatorData();
+        setScenarios(data);
+      } catch (error) {
+        console.error("Error fetching scenario data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <motion.div 
@@ -23,7 +35,11 @@ export function ScenarioSimulatorWidget() {
       </h2>
 
       <div className="flex-1 flex flex-col gap-3">
-        {scenarios.map((s, idx) => (
+        {loading ? (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin"></div>
+          </div>
+        ) : scenarios.map((s, idx) => (
           <div 
             key={idx}
             className={`p-3 rounded-xl border flex justify-between items-center ${
@@ -45,7 +61,7 @@ export function ScenarioSimulatorWidget() {
               </div>
               <div>
                 <div className="text-[10px] text-slate-500 uppercase tracking-wider">Buang</div>
-                <div className={`text-sm font-bold ${parseFloat(s.waste) < 1 ? 'text-emerald-600' : 'text-rose-500'}`}>
+                <div className={`text-sm font-bold ${parseFloat(s.waste) < 10 ? 'text-emerald-600' : 'text-rose-500'}`}>
                   {s.waste}
                 </div>
               </div>
@@ -54,7 +70,7 @@ export function ScenarioSimulatorWidget() {
         ))}
       </div>
 
-      <button className="w-full mt-6 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition active:scale-95">
+      <button className="w-full mt-6 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition active:scale-95 disabled:opacity-50" disabled={loading}>
         <Play className="w-4 h-4" /> Terapkan Simulasi
       </button>
     </motion.div>

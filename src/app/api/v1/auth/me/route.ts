@@ -32,6 +32,7 @@ export async function GET() {
     return NextResponse.json({
       id: user.id,
       email: user.email,
+      fullName: user.fullName,
       role: user.role,
       workspaceName: user.workspace.name,
     }, { status: 200 });

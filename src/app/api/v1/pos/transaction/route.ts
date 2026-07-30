@@ -14,7 +14,27 @@ export async function POST(request: Request) {
 
     const t0 = performance.now();
 
-    // 1. Transactionally update Inventory and log Sales
+    // 1. Validasi Pra-Transaksi
+    const batch = await prisma.batch.findUnique({
+      where: { id: batchId },
+      include: { product: true }
+    });
+
+    if (!batch) {
+      return NextResponse.json({ error: 'Batch tidak ditemukan' }, { status: 404 });
+    }
+
+    if (batch.quantity < quantitySold) {
+      return NextResponse.json({ error: 'Stok tidak mencukupi untuk transaksi ini' }, { status: 400 });
+    }
+
+    const now = new Date();
+    if (now > batch.expiryDate || batch.status === 'EXPIRED') {
+      // Sebagai pengamanan, POS tidak boleh menjual barang basi.
+      return NextResponse.json({ error: 'Penjualan ditolak: Barang telah melewati masa kedaluwarsa (Basi)' }, { status: 403 });
+    }
+
+    // 2. Eksekusi Transaksi (Inventory & Logging)
     const [updatedBatch, salesLog] = await prisma.$transaction([
       prisma.batch.update({
         where: { id: batchId },
@@ -25,14 +45,14 @@ export async function POST(request: Request) {
       }),
       prisma.salesLog.create({
         data: {
-          productId: batchId, // Should ideally map to product id, keeping simple for now
+          productId: batch.product.id, // Pastikan menggunakan Product ID yang tepat, bukan Batch ID
           quantitySold: quantitySold,
           priceAtSale: priceAtSale
         }
       })
     ]);
 
-    // 2. Respond immediately to POS (Zero-blocking)
+    // 3. Merespons ke mesin POS secepat mungkin (Zero-blocking AI Compute)
     const response = NextResponse.json({
       success: true,
       message: 'Transaction recorded',
@@ -40,11 +60,9 @@ export async function POST(request: Request) {
       latencyMs: (performance.now() - t0).toFixed(2)
     });
 
-    // 3. ASYNCHRONOUS BACKGROUND WORK
-    // We do NOT `await` this block so the response returns to POS instantly.
+    // 4. Background Job: Hitung ulang AI & Broadcast Redis
     (async () => {
       try {
-        // A. Broadcast event to WebSocket clients via Redis
         const eventPayload = JSON.stringify({
           type: 'SALE_RECORDED',
           data: {
@@ -56,21 +74,18 @@ export async function POST(request: Request) {
           }
         });
         
-        await redisPublisher.publish('yieldpulse_events', eventPayload);
+        await redisPublisher.publish('yieldpulse_events', eventPayload).catch(() => {});
 
-        // B. Recompute Bellman Matrix with new Inventory
-        const now = new Date();
         const daysToExpiry = Math.max(0, Math.ceil((updatedBatch.expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
         const stateHash = `${updatedBatch.quantity}_${daysToExpiry}`;
 
-        // Only compute if we haven't already computed this exact state
         const existingCache = await prisma.bellmanPolicyCache.findUnique({
           where: {
             batchId_stateHash: { batchId: updatedBatch.id, stateHash: stateHash }
           }
         });
 
-        if (!existingCache) {
+        if (!existingCache && updatedBatch.quantity > 0) {
           const bellmanResult = await calculateOptimalPrice(updatedBatch.product.id, {
             inventory: updatedBatch.quantity,
             daysToExpiry: daysToExpiry,
@@ -81,7 +96,6 @@ export async function POST(request: Request) {
             elasticity: -1.5,
           });
 
-          // Update Cache
           await prisma.bellmanPolicyCache.create({
             data: {
               batchId: updatedBatch.id,
@@ -92,13 +106,11 @@ export async function POST(request: Request) {
             }
           });
 
-          // Also update the current live price on the batch itself
           await prisma.batch.update({
             where: { id: updatedBatch.id },
             data: { currentPrice: bellmanResult.optimalPrice }
           });
 
-          // Broadcast price update to UI
           await redisPublisher.publish('yieldpulse_events', JSON.stringify({
             type: 'PRICE_OPTIMIZED',
             data: {
@@ -106,10 +118,10 @@ export async function POST(request: Request) {
               newPrice: bellmanResult.optimalPrice,
               wasteRisk: bellmanResult.wasteRisk
             }
-          }));
+          })).catch(() => {});
         }
       } catch (err) {
-        console.error('Background Processing Error after POS transaction:', err);
+        console.error('Background Processing Error:', err);
       }
     })();
 

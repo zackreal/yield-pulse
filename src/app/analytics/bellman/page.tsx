@@ -2,38 +2,51 @@
 
 import { motion } from 'framer-motion';
 import { SlidersHorizontal, Settings2, RotateCcw, AlertCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { simulateBellmanPolicy } from '@/app/actions/bellman';
 
-const DUMMY_DECAY_CURVE = [
-  { day: 'Day 7', price: 20000, minPrice: 11000 },
-  { day: 'Day 6', price: 19500, minPrice: 11000 },
-  { day: 'Day 5', price: 18000, minPrice: 11000 },
-  { day: 'Day 4', price: 16500, minPrice: 11000 },
-  { day: 'Day 3', price: 14000, minPrice: 11000 },
-  { day: 'Day 2', price: 12500, minPrice: 11000 },
-  { day: 'Day 1', price: 11000, minPrice: 11000 }, // Hits Floor
-];
-
-// Heatmap Data (Stock vs Days Left)
 const STOCK_LEVELS = [15, 10, 5, 2];
 const DAYS_LEFT = [3, 2, 1, 0];
 
-// Matrix Policy pi*(s,t) -> Prices
-const POLICY_MATRIX: Record<number, Record<number, string>> = {
-  15: { 3: '20.000', 2: '18.000', 1: '15.000', 0: 'EXPIRED' },
-  10: { 3: '20.000', 2: '17.500', 1: '13.000', 0: 'EXPIRED' },
-  5:  { 3: '19.000', 2: '15.000', 1: '10.000', 0: 'EXPIRED' },
-  2:  { 3: '20.000', 2: '20.000', 1: '15.000', 0: 'EXPIRED' },
-};
-
 export default function BellmanAnalyticsPage() {
   const [isComputing, setIsComputing] = useState(false);
+  
+  // Parameter State
+  const [basePrice, setBasePrice] = useState(20000);
+  const [minPrice, setMinPrice] = useState(10000);
+  const [cogs, setCogs] = useState(8000);
+  const [wasteCost, setWasteCost] = useState(2000);
+  const [elasticity, setElasticity] = useState(1.5);
 
-  const handleRecompute = () => {
+  // Results State
+  const [policyMatrix, setPolicyMatrix] = useState<Record<number, Record<number, string>>>({});
+  const [decayCurve, setDecayCurve] = useState<any[]>([]);
+
+  const handleRecompute = async () => {
     setIsComputing(true);
-    setTimeout(() => setIsComputing(false), 1500);
+    try {
+      const result = await simulateBellmanPolicy({
+        basePrice,
+        minPrice,
+        cogs,
+        wasteCost,
+        elasticity
+      });
+      setPolicyMatrix(result.policyMatrix);
+      setDecayCurve(result.decayCurve);
+    } catch (error) {
+      console.error("Failed to compute Bellman policy", error);
+    } finally {
+      setIsComputing(false);
+    }
   };
+
+  // Initial load
+  useEffect(() => {
+    handleRecompute();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex-1 overflow-auto p-4 md:p-8 bg-slate-50 dark:bg-slate-900">
@@ -71,41 +84,41 @@ export default function BellmanAnalyticsPage() {
                 <div>
                   <label className="flex justify-between text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     <span>Harga Normal</span>
-                    <span className="font-mono">Rp 20.000</span>
+                    <span className="font-mono">Rp {basePrice.toLocaleString('id-ID')}</span>
                   </label>
-                  <input type="range" min="15000" max="30000" defaultValue="20000" className="w-full accent-indigo-500" />
+                  <input type="range" min="15000" max="30000" step="1000" value={basePrice} onChange={(e) => setBasePrice(Number(e.target.value))} className="w-full accent-indigo-500" />
                 </div>
                 
                 <div>
                   <label className="flex justify-between text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     <span>Harga Terendah (Batas Rugi)</span>
-                    <span className="font-mono text-rose-500">Rp 10.000</span>
+                    <span className="font-mono text-rose-500">Rp {minPrice.toLocaleString('id-ID')}</span>
                   </label>
-                  <input type="range" min="5000" max="15000" defaultValue="10000" className="w-full accent-rose-500" />
+                  <input type="range" min="5000" max="15000" step="500" value={minPrice} onChange={(e) => setMinPrice(Number(e.target.value))} className="w-full accent-rose-500" />
                 </div>
 
                 <div>
                   <label className="flex justify-between text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     <span>Modal Produk (Beli)</span>
-                    <span className="font-mono text-amber-500">Rp 8.000</span>
+                    <span className="font-mono text-amber-500">Rp {cogs.toLocaleString('id-ID')}</span>
                   </label>
-                  <input type="range" min="4000" max="12000" defaultValue="8000" className="w-full accent-amber-500" />
+                  <input type="range" min="4000" max="12000" step="500" value={cogs} onChange={(e) => setCogs(Number(e.target.value))} className="w-full accent-amber-500" />
                 </div>
 
                 <div>
                   <label className="flex justify-between text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     <span>Biaya Buang Barang Basi</span>
-                    <span className="font-mono">Rp 2.000</span>
+                    <span className="font-mono">Rp {wasteCost.toLocaleString('id-ID')}</span>
                   </label>
-                  <input type="range" min="0" max="5000" defaultValue="2000" className="w-full accent-indigo-500" />
+                  <input type="range" min="0" max="5000" step="100" value={wasteCost} onChange={(e) => setWasteCost(Number(e.target.value))} className="w-full accent-indigo-500" />
                 </div>
 
                 <div>
                   <label className="flex justify-between text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     <span>Sensitivitas Pembeli (Diskon)</span>
-                    <span className="font-mono">-1.5</span>
+                    <span className="font-mono">-{elasticity}</span>
                   </label>
-                  <input type="range" min="0.5" max="3.0" step="0.1" defaultValue="1.5" className="w-full accent-indigo-500" />
+                  <input type="range" min="0.5" max="3.0" step="0.1" value={elasticity} onChange={(e) => setElasticity(Number(e.target.value))} className="w-full accent-indigo-500" />
                 </div>
               </div>
 
@@ -160,19 +173,23 @@ export default function BellmanAnalyticsPage() {
                           s={s}
                         </th>
                         {DAYS_LEFT.map(d => {
-                          const priceStr = POLICY_MATRIX[s][d];
-                          const priceVal = parseInt(priceStr.replace('.', ''));
+                          const priceStr = policyMatrix[s]?.[d] || 'Menghitung...';
+                          let priceVal = 0;
                           
                           // Dynamic Color Calculation (Fake Heatmap)
                           let bgColor = '';
-                          if (priceStr === 'EXPIRED') bgColor = 'bg-slate-100 dark:bg-slate-800 text-slate-400';
-                          else if (priceVal >= 19000) bgColor = 'bg-cyan-50 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 font-medium';
-                          else if (priceVal >= 15000) bgColor = 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 font-medium';
-                          else bgColor = 'bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 font-bold';
+                          if (priceStr === 'EXPIRED') {
+                            bgColor = 'bg-slate-100 dark:bg-slate-800 text-slate-400';
+                          } else if (priceStr !== 'Menghitung...') {
+                            priceVal = parseInt(priceStr.replace(/\./g, ''));
+                            if (priceVal >= basePrice * 0.95) bgColor = 'bg-cyan-50 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 font-medium';
+                            else if (priceVal >= minPrice + (basePrice-minPrice)*0.5) bgColor = 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 font-medium';
+                            else bgColor = 'bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 font-bold';
+                          }
 
                           return (
                             <td key={d} className={`p-3 border border-slate-200 dark:border-slate-700 font-mono text-sm transition-colors ${bgColor}`}>
-                              {priceStr !== 'EXPIRED' ? `Rp ${priceStr}` : priceStr}
+                              {priceStr !== 'EXPIRED' && priceStr !== 'Menghitung...' ? `Rp ${priceStr}` : priceStr}
                             </td>
                           )
                         })}
@@ -185,10 +202,10 @@ export default function BellmanAnalyticsPage() {
 
             {/* Decay Curve */}
             <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/50 p-6 shadow-sm">
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Grafik Penurunan Harga Seiring Waktu</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Grafik Penurunan Harga Seiring Waktu (s=15)</h2>
               <div className="h-64 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={DUMMY_DECAY_CURVE} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                  <AreaChart data={decayCurve} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                     <defs>
                       <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
@@ -200,7 +217,7 @@ export default function BellmanAnalyticsPage() {
                     <YAxis domain={['dataMin - 1000', 'dataMax + 1000']} stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `Rp ${val/1000}k`} />
                     <Tooltip 
                       contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#f8fafc' }}
-                      formatter={(value: any) => [`Rp ${Number(value || 0).toLocaleString()}`, 'Price P*(t)']}
+                      formatter={(value: any) => [`Rp ${Number(value || 0).toLocaleString('id-ID')}`, 'Price P*(t)']}
                     />
                     <Area 
                       type="monotone" 
@@ -209,7 +226,7 @@ export default function BellmanAnalyticsPage() {
                       strokeWidth={3}
                       fillOpacity={1} 
                       fill="url(#colorPrice)" 
-                      animationDuration={1500}
+                      animationDuration={500}
                     />
                     <Area 
                       type="stepAfter" 

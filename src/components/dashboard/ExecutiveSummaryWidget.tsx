@@ -1,10 +1,36 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Target, Lightbulb, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { getExecutiveSummaryData } from '@/app/actions/dashboard';
 
 export function ExecutiveSummaryWidget() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const result = await getExecutiveSummaryData();
+        setData(result);
+      } catch (error) {
+        console.error("Failed to fetch executive summary data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm h-full flex items-center justify-center min-h-[300px]">
+        <div className="w-6 h-6 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <motion.div 
       initial={{ opacity: 0, x: 20 }}
@@ -21,13 +47,13 @@ export function ExecutiveSummaryWidget() {
           <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
             <div className="text-xs text-slate-500 mb-1">Prakiraan Pendapatan</div>
             <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-              ▲ +8.4%
+              ▲ {data?.revenueProjection || '0%'}
             </div>
           </div>
           <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
             <div className="text-xs text-slate-500 mb-1">Prakiraan Limbah</div>
             <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-              ▼ -2.3%
+              ▼ {data?.wasteProjection || '0%'}
             </div>
           </div>
         </div>
@@ -35,15 +61,15 @@ export function ExecutiveSummaryWidget() {
         <div className="space-y-3 mb-6">
           <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
             <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Kelompok Kritis</span>
-            <span className="text-sm font-bold text-slate-900 dark:text-slate-100">14</span>
+            <span className="text-sm font-bold text-slate-900 dark:text-slate-100">{data?.criticalCount || 0}</span>
           </div>
           <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
             <span className="text-sm font-medium text-rose-600 dark:text-rose-400">Sangat Mendesak</span>
-            <span className="text-sm font-bold text-rose-600 dark:text-rose-400">3</span>
+            <span className="text-sm font-bold text-rose-600 dark:text-rose-400">{data?.urgentCount || 0}</span>
           </div>
           <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
             <span className="text-sm font-medium text-amber-600 dark:text-amber-400">Menunggu Diskon</span>
-            <span className="text-sm font-bold text-amber-600 dark:text-amber-400">6</span>
+            <span className="text-sm font-bold text-amber-600 dark:text-amber-400">{data?.warningCount || 0}</span>
           </div>
         </div>
 
@@ -52,7 +78,7 @@ export function ExecutiveSummaryWidget() {
             <Lightbulb className="w-4 h-4" /> Wawasan Bisnis
           </h4>
           <p className="text-sm text-amber-900 dark:text-amber-200">
-            Produk Susu Segar menyumbang <span className="font-bold">62%</span> dari total risiko hari ini.
+            {data?.highestRiskCategory || 'Belum ada data'} menyumbang <span className="font-bold">{data?.highestRiskPercent || 0}%</span> dari total risiko hari ini.
           </p>
         </div>
       </div>

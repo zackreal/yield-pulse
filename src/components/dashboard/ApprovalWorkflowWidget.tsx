@@ -1,14 +1,44 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GitMerge, Check, Clock, BrainCircuit, UserCog, Store, TerminalSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { getHeroDecisionData } from '@/app/actions/dashboard';
 
 export function ApprovalWorkflowWidget() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const result = await getHeroDecisionData();
+        setData(result);
+      } catch (error) {
+        console.error("Failed to fetch workflow data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm flex items-center justify-center min-h-[300px]">
+        <div className="w-6 h-6 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin"></div>
+      </div>
+    );
+  }
+
+  // Determine dynamic steps based on Hero Decision Data
+  const isCritical = data?.status === 'CRITICAL';
+  const hasDecision = !!data;
+
   const steps = [
-    { name: 'Sistem Bellman', icon: BrainCircuit, status: 'done' },
-    { name: 'Supervisor', icon: UserCog, status: 'done' },
-    { name: 'Manajer Toko', icon: Store, status: 'current' },
+    { name: 'Sistem Bellman', icon: BrainCircuit, status: hasDecision ? 'done' : 'pending' },
+    { name: 'Supervisor', icon: UserCog, status: hasDecision ? 'done' : 'pending' },
+    { name: 'Manajer Toko', icon: Store, status: hasDecision ? (isCritical ? 'current' : 'done') : 'pending' },
     { name: 'Sinkronisasi POS', icon: TerminalSquare, status: 'pending' },
   ];
 

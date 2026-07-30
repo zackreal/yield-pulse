@@ -1,17 +1,48 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Clock, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { getHeroDecisionData } from '@/app/actions/dashboard';
 
 export function TimelineBellmanWidget() {
-  const timeline = [
-    { day: 'Hari 5', price: '20.000', status: 'past' },
-    { day: 'Hari 4', price: '19.000', status: 'past' },
-    { day: 'Hari 3', price: '18.000', status: 'past' },
-    { day: 'Hari 2', price: '16.500', status: 'current' },
-    { day: 'Hari 1', price: '14.000', status: 'future' },
-  ];
+  const [timeline, setTimeline] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const result = await getHeroDecisionData();
+        if (result && result.timeline) {
+          setTimeline(result.timeline);
+        }
+      } catch (error) {
+        console.error("Failed to fetch timeline data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const formatCurrency = (val: number) => `Rp ${val.toLocaleString('id-ID')}`;
+
+  if (loading) {
+    return (
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm flex items-center justify-center min-h-[300px]">
+        <div className="w-6 h-6 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (timeline.length === 0) {
+    return (
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center min-h-[300px] text-center">
+        <Clock className="w-8 h-8 text-slate-400 mb-3" />
+        <p className="text-slate-500 text-sm">Tidak ada riwayat keputusan harga yang tersedia.</p>
+      </div>
+    );
+  }
 
   return (
     <motion.div 
@@ -54,7 +85,7 @@ export function TimelineBellmanWidget() {
                   item.status === 'past' ? 'text-slate-400 line-through' :
                   'text-slate-900 dark:text-white'
                 }`}>
-                  Rp {item.price}
+                  {formatCurrency(item.price)}
                 </span>
               </div>
             </div>

@@ -1,36 +1,31 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 import { BellRing, AlertCircle, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { getNotificationData } from '@/app/actions/dashboard';
 
 export function NotificationCenterWidget() {
-  const notifications = [
-    {
-      id: 1,
-      type: 'critical',
-      title: 'Susu B204',
-      message: 'Kedaluwarsa besok. Potensi Rugi: Rp280.000',
-      icon: <AlertCircle className="w-4 h-4" />,
-      colorClass: 'text-rose-600 dark:text-rose-400',
-      bgClass: 'bg-rose-100 dark:bg-rose-950/50 border-rose-200 dark:border-rose-900',
-    },
-    {
-      id: 2,
-      type: 'warning',
-      title: 'Roti A109',
-      message: 'Melewati batas waktu diskon',
-      icon: <ShieldAlert className="w-4 h-4" />,
-      colorClass: 'text-amber-600 dark:text-amber-400',
-      bgClass: 'bg-amber-100 dark:bg-amber-950/50 border-amber-200 dark:border-amber-900',
-    },
-    {
-      id: 3,
-      type: 'success',
-      title: 'Ayam Beku',
-      message: 'Aman / Optimal',
-      icon: <CheckCircle2 className="w-4 h-4" />,
-      colorClass: 'text-emerald-600 dark:text-emerald-400',
-      bgClass: 'bg-emerald-100 dark:bg-emerald-950/50 border-emerald-200 dark:border-emerald-900',
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getNotificationData();
+        setNotifications(data.map((n: any) => ({
+          ...n,
+          icon: n.type === 'critical' ? <AlertCircle className="w-4 h-4" /> : n.type === 'warning' ? <ShieldAlert className="w-4 h-4" /> : <CheckCircle2 className="w-4 h-4" />,
+          colorClass: n.type === 'critical' ? 'text-rose-600 dark:text-rose-400' : n.type === 'warning' ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400',
+          bgClass: n.type === 'critical' ? 'bg-rose-100 dark:bg-rose-950/50 border-rose-200 dark:border-rose-900' : n.type === 'warning' ? 'bg-amber-100 dark:bg-amber-950/50 border-amber-200 dark:border-amber-900' : 'bg-emerald-100 dark:bg-emerald-950/50 border-emerald-200 dark:border-emerald-900'
+        })));
+      } catch (error) {
+        console.error("Error fetching notification data:", error);
+      } finally {
+        setLoading(false);
+      }
     }
-  ];
+    fetchData();
+  }, []);
 
   return (
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm h-full flex flex-col">
@@ -40,7 +35,11 @@ export function NotificationCenterWidget() {
       </h3>
 
       <div className="flex-1 space-y-3">
-        {notifications.map((notification) => (
+        {loading ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin"></div>
+          </div>
+        ) : notifications.map((notification) => (
           <div 
             key={notification.id} 
             className="flex items-start gap-3 p-3 rounded-xl border bg-slate-50 dark:bg-slate-800/30 border-slate-100 dark:border-slate-800"

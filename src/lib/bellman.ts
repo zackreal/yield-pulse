@@ -9,8 +9,10 @@ interface BellmanParams {
   baseDemand: number;          // Permintaan bawaan produk (λ0) - Prior
   elasticity: number;          // Sensitivitas harga (ε) - biasanya negatif
   holdingCostPerDay?: number;  // Biaya penyimpanan per hari (H)
+  wasteCostPerItem?: number;   // Biaya pembuangan barang basi (W)
   historicalSales?: number[];  // Data penjualan lampau untuk Bayesian Update
   aggregationThreshold?: number; // Ambang batas stok untuk State Aggregation
+  isSimulation?: boolean;      // Jika true, tidak melakukan verifikasi Guardrail ke DB
 }
 
 export interface BellmanResult {
@@ -31,11 +33,15 @@ export async function calculateOptimalPrice(productId: string, params: BellmanPa
     inventory,
     daysToExpiry,
     basePrice,
+    minPrice,
+    cogs,
     baseDemand,
     elasticity,
     holdingCostPerDay = 100,
+    wasteCostPerItem = 0,
     historicalSales = [],
     aggregationThreshold = 100, // Defaul State Aggregation mulai saat stok > 100
+    isSimulation = false,
   } = params;
 
   // --- 1. Bayesian Filter (Demand Calibration) ---
@@ -68,7 +74,11 @@ export async function calculateOptimalPrice(productId: string, params: BellmanPa
 
   // --- 3. Memory Optimization (1D Array Backward Induction) ---
   // Kita hanya menyimpan Value Function hari esok (V_next) dan hari ini (V_curr)
-  let V_next = new Float64Array(numBuckets + 1).fill(0);
+  let V_next = new Float64Array(numBuckets + 1);
+  for (let b = 0; b <= numBuckets; b++) {
+    // Penalty at T (expiry) is waste cost for remaining inventory
+    V_next[b] = -Math.min(b * bucketSize, inventory) * wasteCostPerItem;
+  }
   let V_curr = new Float64Array(numBuckets + 1).fill(0);
   
   // Policy Matrix tetap 2D karena kita butuh trajektorinya untuk UI/Redis
@@ -170,7 +180,13 @@ export async function calculateOptimalPrice(productId: string, params: BellmanPa
   const expectedValueToday = V_curr[numBuckets];
 
   // 5. Hard Guardrail
-  const finalSafePrice = await enforcePriceSafety(productId, rawOptimalPrice);
+  let finalSafePrice = rawOptimalPrice;
+  if (isSimulation) {
+    const absoluteFloor = Math.max(cogs, minPrice);
+    finalSafePrice = Math.max(absoluteFloor, rawOptimalPrice);
+  } else {
+    finalSafePrice = await enforcePriceSafety(productId, rawOptimalPrice);
+  }
 
   // 6. Waste Risk Estimation
   let wasteRisk = 0;
